@@ -50,6 +50,7 @@ export function AutocratProvider({ children }: { children: ReactNode }) {
     deserialize: (value) => AUTOCRAT_VERSIONS[Number(value)],
   });
   const { programId, idl } = programVersion!;
+  console.log("programid", programId.toString())
   const dao = useMemo(
     () =>
       PublicKey.findProgramAddressSync(
@@ -58,6 +59,8 @@ export function AutocratProvider({ children }: { children: ReactNode }) {
       )[0],
     [programId],
   );
+  console.log("dao", dao.toString())
+
   const daoTreasury = useMemo(
     () => PublicKey.findProgramAddressSync([dao.toBuffer()], programId)[0],
     [dao, programId],

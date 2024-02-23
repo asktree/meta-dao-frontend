@@ -12,7 +12,7 @@ export enum Networks {
 export function useNetworkConfiguration() {
   const [network, setNetwork] = useLocalStorage<Networks>({
     key: 'meta-dao-network-configuration',
-    defaultValue: Networks.Mainnet,
+    defaultValue: Networks.Devnet,
     getInitialValueInEffect: false,
   });
 
