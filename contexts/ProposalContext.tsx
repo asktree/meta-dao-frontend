@@ -243,7 +243,7 @@ export function ProposalProvider({
       }
       let error = false;
       let metaBalance = null;
-      const metaMint = new PublicKey('METADDFL6wWMWEoKTFJwcThTbUmtarRJZjRpzUvkxhr');
+      const metaMint = new PublicKey('96eWNK8LnBxKJqu3xTExiupXturPexTGXuzTzqJaLFrd');
       const quoteVault = await getVaultMint(proposal.account.quoteVault);
       const baseVault = await getVaultMint(proposal.account.baseVault);
       const userBasePass = getAssociatedTokenAddressSync(

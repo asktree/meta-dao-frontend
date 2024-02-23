@@ -13,7 +13,7 @@ import { InitializedVault, ProposalAccount, VaultAccount, VaultAccountWithKey } 
 
 export function useConditionalVault() {
   const provider = useProvider();
-  const programId = new PublicKey('vaU1tVLj8RFk7mNj1BxqgAsMKKaL8UvEUHvU3tdbZPe');
+  const programId = new PublicKey('DumoESzUQRzSPufr3oXms88rt52gTNQ52ADSmM5pbYwp');
   const program = useMemo(
     () => new Program<ConditionalVault>(CONDITIONAL_VAULT_IDL, programId, provider),
     [provider, programId],
