@@ -7,7 +7,7 @@ export function Welcome() {
       <Title className={classes.title} ta="center" mt={100}>
         Welcome to the{' '}
         <Text inherit variant="gradient" component="span" gradient={{ from: 'pink', to: 'yellow' }}>
-          Meta-DAO
+          Tard-DAO
         </Text>
       </Title>
       <Text c="dimmed" ta="center" size="lg" maw={580} mx="auto" mt="xl">
