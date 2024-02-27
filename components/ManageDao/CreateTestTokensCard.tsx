@@ -15,26 +15,18 @@ export default function CreateTestTokensCard() {
   const provider = useProvider();
   const { tokens, setTokens } = useTokens();
 
+
+
+
+
   const handleCreateDao = useCallback(async () => {
     if (!wallet.publicKey || !wallet.signTransaction || !wallet.signAllTransactions) return;
 
     const txMeta = new Transaction();
-    const metaKeypair = Keypair.generate();
-    const quoteKeypair = Keypair.generate();
-    txMeta.add(
-      SystemProgram.createAccount({
-        programId: token.TOKEN_PROGRAM_ID,
-        fromPubkey: wallet.publicKey,
-        newAccountPubkey: metaKeypair.publicKey,
-        lamports: await connection.getMinimumBalanceForRentExemption(token.MINT_SIZE),
-        space: token.MINT_SIZE,
-      }),
-    );
-    txMeta.add(
-      token.createInitializeMintInstruction(metaKeypair.publicKey, 9, wallet.publicKey, null),
-    );
+    
+    const mintAuthorityKeypair = Keypair.fromSecretKey(Uint8Array.from([48,251,52,175,239,174,173,222,122,205,222,68,183,155,149,6,244,35,133,69,48,235,6,193,63,35,28,46,26,216,255,201,46,2,39,167,85,2,3,7,218,22,224,17,17,165,227,69,73,227,126,17,85,169,191,122,13,177,148,134,173,196,83,152]))
     const metaAccount = token.getAssociatedTokenAddressSync(
-      metaKeypair.publicKey,
+      tokens.meta!.publicKey,
       wallet.publicKey,
     );
     txMeta.add(
@@ -42,33 +34,22 @@ export default function CreateTestTokensCard() {
         wallet.publicKey,
         metaAccount,
         wallet.publicKey,
-        metaKeypair.publicKey,
-      ),
+        tokens.meta!.publicKey,
+        ),
     );
     txMeta.add(
       token.createMintToInstruction(
-        metaKeypair.publicKey,
+        tokens.meta!.publicKey,
         metaAccount,
-        wallet.publicKey,
+        mintAuthorityKeypair.publicKey,
         100000n * BigInt(LAMPORTS_PER_SOL),
       ),
     );
 
     const txUsdc = new Transaction();
-    txUsdc.add(
-      SystemProgram.createAccount({
-        programId: token.TOKEN_PROGRAM_ID,
-        fromPubkey: wallet.publicKey,
-        newAccountPubkey: quoteKeypair.publicKey,
-        lamports: await connection.getMinimumBalanceForRentExemption(token.MINT_SIZE),
-        space: token.MINT_SIZE,
-      }),
-    );
-    txUsdc.add(
-      token.createInitializeMintInstruction(quoteKeypair.publicKey, 6, wallet.publicKey, null),
-    );
+    
     const quoteAccount = token.getAssociatedTokenAddressSync(
-      quoteKeypair.publicKey,
+      tokens.usdc!.publicKey,
       wallet.publicKey,
     );
     txUsdc.add(
@@ -76,14 +57,14 @@ export default function CreateTestTokensCard() {
         wallet.publicKey,
         quoteAccount,
         wallet.publicKey,
-        quoteKeypair.publicKey,
-      ),
+        tokens.usdc!.publicKey,
+        ),
     );
     txUsdc.add(
       token.createMintToInstruction(
-        quoteKeypair.publicKey,
+        tokens.usdc!.publicKey,
         quoteAccount,
-        wallet.publicKey,
+        mintAuthorityKeypair.publicKey,
         100000n * BigInt(LAMPORTS_PER_SOL),
       ),
     );
@@ -92,37 +73,22 @@ export default function CreateTestTokensCard() {
     txMeta.recentBlockhash = blockhash.blockhash;
     txMeta.lastValidBlockHeight = blockhash.lastValidBlockHeight;
     txMeta.feePayer = wallet.publicKey;
-    txMeta.sign(metaKeypair);
+    txMeta.sign(mintAuthorityKeypair);
 
     txUsdc.recentBlockhash = blockhash.blockhash;
     txUsdc.lastValidBlockHeight = blockhash.lastValidBlockHeight;
     txUsdc.feePayer = wallet.publicKey;
-    txUsdc.sign(quoteKeypair);
+    txUsdc.sign(mintAuthorityKeypair);
 
     const signedTxs = await wallet.signAllTransactions([txMeta, txUsdc]);
-    await Promise.all(signedTxs.map((tx) => connection.sendRawTransaction(tx.serialize())));
+    await Promise.all(signedTxs.map((tx) => connection.sendRawTransaction(tx.serialize(), {skipPreflight: true})));
 
     notifications.show({
       message: 'Created Test $META and Test $USDC',
       title: 'Successfully minted',
       color: 'green',
     });
-    setTokens({
-      meta: {
-        publicKey: metaKeypair.publicKey,
-        symbol: 'META',
-        name: 'Meta',
-        decimals: 9,
-        tokenProgram: token.TOKEN_PROGRAM_ID,
-      },
-      usdc: {
-        publicKey: quoteKeypair.publicKey,
-        symbol: 'USDC',
-        name: 'Circle USD',
-        decimals: 6,
-        tokenProgram: token.TOKEN_PROGRAM_ID,
-      },
-    });
+   
   }, [provider, wallet, connection]);
 
   return (
