@@ -126,7 +126,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <Link href="/" style={{ textDecoration: 'none', color: 'inherit' }}>
               <Flex justify="flex-start" align="center" gap="xs">
                 <Image src={icon} alt="App logo" width={36} height={36} ref={logoRef} />
-                <Title order={!isTiny ? 3 : 4}>the Tard-DAO</Title>
+                <Title order={!isTiny ? 3 : 4}>the Demo-DAO</Title>
               </Flex>
             </Link>
             <Group>
@@ -194,7 +194,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <footer>
         <Card withBorder style={{ borderRadius: '0px', borderLeft: '0px', borderRight: '0px' }}>
           <Group justify="space-between" p="md">
-            <Title order={4}>the Tard-DAO</Title>
+            <Title order={4}>the Demo-DAO</Title>
             <Group justify="center" p="xs">
               {links.map((link, i) => (
                 <Link

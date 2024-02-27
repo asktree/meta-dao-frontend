@@ -19,7 +19,7 @@ const AUTOCRAT_V0_1_IDL: AutocratProgram = require('@/lib/idl/autocrat_v0.1.json
 
 export const AUTOCRAT_VERSIONS: ProgramVersion[] = [
   {
-    label: 'sniffed',
+    label: 'demo',
     programId: new PublicKey('GTnsZQdvx13wXye8gB39P6ZcrEEiajmx796y7BsHrEBm'),
     idl: AUTOCRAT_V0_1_IDL,
   },

@@ -2,7 +2,7 @@
 
 ![License MIT](https://img.shields.io/badge/License-MIT-blue.svg)
 
-The most popular frontend for the Tard-DAO.
+The most popular frontend for the Demo-DAO.
 
 ## npm scripts
 
